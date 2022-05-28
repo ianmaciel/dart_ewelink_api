@@ -1,0 +1,13 @@
+name: flutter_ewelink_api_example
+description: Usage example of flutter_ewelink_api
+version: 0.0.1
+homepage: https://github.com/ianmaciel/flutter_ewelink_api
+publish_to: none
+
+
+environment:
+  sdk: ">=2.17.1 <3.0.0"
+
+dependencies:
+  flutter_ewelink_api:
+    path: ../
