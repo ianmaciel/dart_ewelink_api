@@ -20,22 +20,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import 'dart:convert';
+import 'package:json_annotation/json_annotation.dart';
 
-import 'package:test/test.dart';
+part 'ewelink_app_infos.g.dart';
 
-import 'package:dart_ewelink_api/dart_ewelink_api.dart';
+@JsonSerializable(explicitToJson: true)
+class EwelinkAppInfos {
+  EwelinkAppInfos(this.appVersion, this.os);
+  String appVersion;
+  String os;
 
-import 'fixtures/auth.dart';
-
-void main() {
-  test('Model ewelink user', () {
-    Map<String, dynamic> jsonFixture = jsonDecode(fixtureCredentials);
-    EwelinkCredentials ewelinkCredentials =
-        EwelinkCredentials.fromJson(jsonFixture);
-    expect(ewelinkCredentials.at, 'my_secret_at');
-    expect(ewelinkCredentials.rt, 'my_secret_rt');
-    expect(ewelinkCredentials.region, 'us');
-    expect(ewelinkCredentials.user.email, 'myemailaddress@gmail.com');
-  });
+  factory EwelinkAppInfos.fromJson(Map<String, dynamic> json) =>
+      _$EwelinkAppInfosFromJson(json);
+  Map<String, dynamic> toJson() => _$EwelinkAppInfosToJson(this);
 }
