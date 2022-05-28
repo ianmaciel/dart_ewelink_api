@@ -1,4 +1,4 @@
-library flutter_ewelink_api;
+library dart_ewelink_api;
 
 /// A Calculator.
 class Calculator {

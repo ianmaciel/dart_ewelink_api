@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import 'package:flutter_ewelink_api/flutter_ewelink_api.dart';
+import 'package:dart_ewelink_api/dart_ewelink_api.dart';
 
 void main() {
   print('Hello, World!');
