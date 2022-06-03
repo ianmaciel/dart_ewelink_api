@@ -1,4 +1,4 @@
-name: Publish plugin
+name: Publish package
 
 on:
   release:
