@@ -1,3 +1,12 @@
+## 0.0.2
+
+* Only update changelog with version 0.0.2 and update
+  the pubspec file to sync versions.
+
+## 0.0.2
+
+* Include action to publish the package
+
 ## 0.0.1
 
 * Implement toogleDevice() with hardcoded initial state.
