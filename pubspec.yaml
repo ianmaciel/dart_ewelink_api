@@ -1,6 +1,6 @@
 name: dart_ewelink_api
 description: An pure dart API to access ewelink services
-version: 0.0.2
+version: 0.0.3
 homepage: https://github.com/ianmaciel/dart_ewelink_api
 
 environment:
