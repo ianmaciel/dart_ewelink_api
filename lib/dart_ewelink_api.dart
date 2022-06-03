@@ -27,4 +27,5 @@ export 'src/model/ewelink_app_infos.dart';
 export 'src/model/ewelink_client_info.dart';
 export 'src/model/ewelink_credentials.dart';
 export 'src/model/ewelink_user.dart';
-export 'src/model/ewelink.dart';
+export 'src/model/ewelink_exceptions.dart';
+export 'src/api/ewelink.dart';

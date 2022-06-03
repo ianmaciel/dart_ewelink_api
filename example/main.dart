@@ -20,8 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+import 'dart:developer';
+
 import 'package:dart_ewelink_api/dart_ewelink_api.dart';
 
-void main() {
-  print('Hello, World!');
+void main() async {
+  Ewelink ewelink = Ewelink(
+    email: 'myemailaaddress@gmail.com',
+    password: 'mypassword',
+    region: 'us',
+  );
+
+  // Get credentials
+  EwelinkCredentials credentials = await ewelink.getCredentials();
+  log(credentials.at);
+
+  // Toogle device by its id
+  // TODO: the method getDevices() to read the device id is not implemented on
+  //       this library yet. You may copy your device_id from ewelink app under
+  //       the device details screen.
+  await ewelink.toggleDevice(deviceId: 'my_hardcoded_device_id');
 }

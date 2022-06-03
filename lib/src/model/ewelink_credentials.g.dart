@@ -8,10 +8,10 @@ part of 'ewelink_credentials.dart';
 
 EwelinkCredentials _$EwelinkCredentialsFromJson(Map<String, dynamic> json) =>
     EwelinkCredentials(
-      json['at'] as String,
-      json['rt'] as String,
-      json['region'] as String,
-      EwelinkUser.fromJson(json['user'] as Map<String, dynamic>),
+      at: json['at'] as String,
+      rt: json['rt'] as String,
+      region: json['region'] as String,
+      user: EwelinkUser.fromJson(json['user'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$EwelinkCredentialsToJson(EwelinkCredentials instance) =>

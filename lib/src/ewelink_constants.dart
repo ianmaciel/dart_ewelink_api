@@ -20,26 +20,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import 'package:json_annotation/json_annotation.dart';
-
-import 'ewelink_user.dart';
-
-part 'ewelink_credentials.g.dart';
-
-@JsonSerializable(explicitToJson: true)
-class EwelinkCredentials {
-  EwelinkCredentials({
-    required this.at,
-    required this.rt,
-    required this.region,
-    required this.user,
-  });
-  String at;
-  String rt;
-  String region;
-  EwelinkUser user;
-
-  factory EwelinkCredentials.fromJson(Map<String, dynamic> json) =>
-      _$EwelinkCredentialsFromJson(json);
-  Map<String, dynamic> toJson() => _$EwelinkCredentialsToJson(this);
+// These settings were obtained from [ewelink-api](https://github.com/skydiver/ewelink-api/blob/5a07f6b6152d603c71266012177cc4b47d533bf9/src/data/constants.js).
+// Although this kind of information shouldn't be versioned this information was
+// already made public and provided by Sonoff team, as [described here](https://github.com/skydiver/ewelink-api/blob/5a07f6b6152d603c71266012177cc4b47d533bf9/docs/class-instantiation.md#custom-app_id-and-app_secret).
+class EwelinkConstants {
+  static const DefaultAppID = 'YzfeftUVcZ6twZw1OoVKPRFYTrGEg01Q';
+  static const DefaultAppSecret = '4G91qSoboqYO4Y0XJ0LPPKIsq8reHdfa';
 }
