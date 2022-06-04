@@ -1,4 +1,8 @@
-## 0.0.2
+## 0.0.4
+
+* Read the device state before toggle it.
+
+## 0.0.3
 
 * Only update changelog with version 0.0.2 and update
   the pubspec file to sync versions.

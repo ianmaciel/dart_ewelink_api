@@ -21,8 +21,10 @@
 // SOFTWARE.
 
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:crypto/crypto.dart';
+import 'package:dart_ewelink_api/src/model/ewelink_device.dart';
 import 'package:dart_ewelink_api/src/model/ewelink_error_response.dart';
 import 'package:dart_ewelink_api/src/model/ewelink_exceptions.dart';
 import 'package:http/http.dart' as http;
@@ -96,8 +98,12 @@ class EwelinkService {
     return credentials!;
   }
 
-  Future<bool> setDevicePowerState(
-      {required String deviceId, required String state, channel = 1}) async {
+  Future<bool> setDevicePowerState({
+    required String deviceId,
+    required String state,
+    channel = 1,
+    String? initialStatus,
+  }) async {
     if (credentials == null) {
       throw EwelinkGenericException('Not logged in');
     }
@@ -107,38 +113,43 @@ class EwelinkService {
     // const uiid = _get(device, 'extra.extra.uiid', false);
 
     // TODO - fixme
-    String status = 'off';
-    // let status = _get(device, 'params.switch', false);
-    // const switches = _get(device, 'params.switches', false);
+    EwelinkDevice? device;
+    if (initialStatus == null) {
+      device = await getDevice(deviceId: deviceId);
 
-    // const switchesAmount = getDeviceChannelCount(uiid);
+      int switchesAmount = device.params.switches?.length ?? 1;
 
-    // if (switchesAmount > 0 && switchesAmount < channel) {
-    //   return { error: 404, msg: errors.ch404 };
-    // }
+      if (switchesAmount > 0 && switchesAmount < channel) {
+        throw EwelinkGenericException('error: 404, msg: errors.ch404');
+      }
 
-    // if (error || (!status && !switches)) {
-    //   return { error, msg: errors[error] };
-    // }
+      if (device.params.status == null && device.params.switches == null) {
+        throw EwelinkGenericException('error, msg: errors[error]');
+      }
+
+      if (device.params.status != null) {
+        initialStatus = device.params.status;
+      }
+      if (device.params.switches != null) {
+        initialStatus = device.params.getSwitchesStatus(channel);
+      }
+    }
 
     String stateToSwitch = state;
     Map<String, dynamic> params = {};
 
-    // if (switches) {
-    //   status = switches[channel - 1].switch;
-    // }
-
     if (state == 'toggle') {
-      stateToSwitch = status == 'on' ? 'off' : 'on';
+      stateToSwitch = initialStatus == 'on' ? 'off' : 'on';
     }
 
-    // if (switches) {
-    //   params.switches = switches;
-    //   params.switches[channel - 1].switch = stateToSwitch;
-    // } else {
-    params.addAll({'switch': stateToSwitch});
-    // }
+    if (device?.params.switches != null) {
+      params['switches'] = device!.params.switches;
+      ((params['switches'])[channel - 1])['switch'] = stateToSwitch;
+    } else {
+      params['switch'] = stateToSwitch;
+    }
 
+    // TODO
     // if (this.devicesCache) {
     //   return ChangeStateZeroconf.set({
     //     url: this.getZeroconfUrl(device),
@@ -155,7 +166,7 @@ class EwelinkService {
       'appid': appId,
       'nonce': _getNonce,
       'ts': _timestamp,
-      'version': apiVersion,
+      'version': apiVersion.toString(),
     };
     http.Response response = await _makeRequest(
       method: 'post',
@@ -163,7 +174,6 @@ class EwelinkService {
       body: body,
     );
 
-    //const responseError = _get(response, 'error', false);
     Map<String, dynamic> responseObject = jsonDecode(response.body);
     if (EwelinkErrorResponse.hasError(responseObject)) {
       EwelinkErrorResponse error =
@@ -179,7 +189,7 @@ class EwelinkService {
     return true;
   }
 
-  Future<Map<String, dynamic>> getDevice({required String deviceId}) async {
+  Future<EwelinkDevice> getDevice({required String deviceId}) async {
     if (credentials == null) {
       throw EwelinkGenericException('Not logged in');
     }
@@ -188,15 +198,12 @@ class EwelinkService {
       'appid': appId,
       'nonce': _getNonce,
       'ts': _timestamp,
-      'version': apiVersion,
+      'version': apiVersion.toString(),
     };
     http.Response response = await _makeRequest(
       urlPath: '/user/device/${deviceId}',
       queryParameters: queryParameters,
     );
-
-    // TODO
-    //const error = _get(device, 'error', false);
 
     Map<String, dynamic> responseObject = jsonDecode(response.body);
     if (EwelinkErrorResponse.hasError(responseObject)) {
@@ -205,7 +212,7 @@ class EwelinkService {
       throw EwelinkGenericException(error.msg);
     }
 
-    return responseObject;
+    return EwelinkDevice.fromJson(responseObject);
   }
 
   Future<http.Response> _makeRequest({
@@ -233,9 +240,10 @@ class EwelinkService {
         scheme: requestUrl.scheme,
         host: requestUrl.host,
         port: requestUrl.port,
-        path: urlPath,
+        path: requestUrl.path,
         queryParameters: queryParameters,
       );
+      log(getUri.toString());
       response = await client.get(
         getUri,
         headers: headers,

@@ -20,23 +20,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import 'dart:developer';
+import 'package:dart_ewelink_api/src/model/ewelink_device_params.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-import 'package:dart_ewelink_api/dart_ewelink_api.dart';
+part 'ewelink_device.g.dart';
 
-void main() async {
-  Ewelink ewelink = Ewelink(
-    email: 'myemailaaddress@gmail.com',
-    password: 'mypassword',
-    region: 'us',
+@JsonSerializable(explicitToJson: true)
+class EwelinkDevice {
+  EwelinkDevice(
+    this.online,
+    this.deviceid,
+    this.name,
+    this.type,
+    this.params,
   );
+  bool online;
+  String deviceid;
+  String name;
+  String type;
+  EwelinkDeviceParams params;
 
-  // Get credentials
-  EwelinkCredentials credentials = await ewelink.getCredentials();
-  log(credentials.at);
+  // let status = _get(device, 'params.switch', false);
+  // const switches = _get(device, 'params.switches', false);
 
-  await ewelink.toggleDevice(deviceId: 'my_hardcoded_device_id');
-  // Toogle device by its id, ignoring its current state.
-  await ewelink.toggleDevice(
-      deviceId: 'my_hardcoded_device_id', initialStatus: 'off');
+  factory EwelinkDevice.fromJson(Map<String, dynamic> json) =>
+      _$EwelinkDeviceFromJson(json);
+  Map<String, dynamic> toJson() => _$EwelinkDeviceToJson(this);
 }

@@ -106,14 +106,21 @@ class Ewelink {
     return credentials!;
   }
 
+  /// Toggle the device
+  ///
+  /// if [initialStatus] is set, then it whill ignore the current state of
+  /// device and will use the [initialStatus] instead. Useful to avoid request
+  /// and reduce the latency when you already know the switch state.
   Future<bool> toggleDevice({
     required String deviceId,
     int channel = 1,
+    String? initialStatus,
   }) async {
     return setDevicePowerState(
       deviceId: deviceId,
       state: 'toggle',
       channel: channel,
+      initialStatus: initialStatus,
     );
   }
 
@@ -128,10 +135,12 @@ class Ewelink {
     required String deviceId,
     required state,
     channel = 1,
+    String? initialStatus,
   }) async {
     return _service.setDevicePowerState(
       deviceId: deviceId,
       state: state,
+      initialStatus: initialStatus,
     );
   }
 
