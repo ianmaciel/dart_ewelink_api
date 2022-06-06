@@ -102,7 +102,6 @@ class EwelinkService {
     required String deviceId,
     required String state,
     channel = 1,
-    String? initialStatus,
   }) async {
     if (credentials == null) {
       throw EwelinkGenericException('Not logged in');
@@ -113,26 +112,24 @@ class EwelinkService {
     // const uiid = _get(device, 'extra.extra.uiid', false);
 
     // TODO - fixme
-    EwelinkDevice? device;
-    if (initialStatus == null) {
-      device = await getDevice(deviceId: deviceId);
+    EwelinkDevice device = await getDevice(deviceId: deviceId);
 
-      int switchesAmount = device.params.switches?.length ?? 1;
+    int switchesAmount = device.params.switches?.length ?? 1;
 
-      if (switchesAmount > 0 && switchesAmount < channel) {
-        throw EwelinkGenericException('error: 404, msg: errors.ch404');
-      }
+    if (switchesAmount > 0 && switchesAmount < channel) {
+      throw EwelinkGenericException('error: 404, msg: errors.ch404');
+    }
 
-      if (device.params.status == null && device.params.switches == null) {
-        throw EwelinkGenericException('error, msg: errors[error]');
-      }
+    if (device.params.status == null && device.params.switches == null) {
+      throw EwelinkGenericException('error, msg: errors[error]');
+    }
 
-      if (device.params.status != null) {
-        initialStatus = device.params.status;
-      }
-      if (device.params.switches != null) {
-        initialStatus = device.params.getSwitchesStatus(channel);
-      }
+    String? initialStatus;
+    if (device.params.status != null) {
+      initialStatus = device.params.status;
+    }
+    if (device.params.switches != null) {
+      initialStatus = device.params.getSwitchesStatus(channel);
     }
 
     String stateToSwitch = state;
@@ -168,23 +165,11 @@ class EwelinkService {
       'ts': _timestamp,
       'version': apiVersion.toString(),
     };
-    http.Response response = await _makeRequest(
+    await _makeRequest(
       method: 'post',
       urlPath: '/user/device/status',
       body: body,
     );
-
-    Map<String, dynamic> responseObject = jsonDecode(response.body);
-    if (EwelinkErrorResponse.hasError(responseObject)) {
-      EwelinkErrorResponse error =
-          EwelinkErrorResponse.fromJson(responseObject);
-      if (error.code == 401 &&
-          error.errmsg == 'no authorization' &&
-          credentials!.at.isNotEmpty) {
-        throw EwelinkInvalidAccessToken();
-      }
-      throw EwelinkGenericException(error.errmsg);
-    }
 
     return true;
   }
@@ -200,22 +185,15 @@ class EwelinkService {
       'ts': _timestamp,
       'version': apiVersion.toString(),
     };
-    http.Response response = await _makeRequest(
+    Map<String, dynamic> response = await _makeRequest(
       urlPath: '/user/device/${deviceId}',
       queryParameters: queryParameters,
     );
 
-    Map<String, dynamic> responseObject = jsonDecode(response.body);
-    if (EwelinkErrorResponse.hasError(responseObject)) {
-      EwelinkErrorResponse error =
-          EwelinkErrorResponse.fromJson(responseObject);
-      throw EwelinkGenericException(error.msg);
-    }
-
-    return EwelinkDevice.fromJson(responseObject);
+    return EwelinkDevice.fromJson(response);
   }
 
-  Future<http.Response> _makeRequest({
+  Future<Map<String, dynamic>> _makeRequest({
     String method = 'get',
     required String urlPath,
     Map<String, dynamic> body = const {},
@@ -243,13 +221,29 @@ class EwelinkService {
         path: requestUrl.path,
         queryParameters: queryParameters,
       );
-      log(getUri.toString());
       response = await client.get(
         getUri,
         headers: headers,
       );
     }
-    return response;
+
+    Map<String, dynamic> responseObject = jsonDecode(response.body);
+    if (EwelinkErrorResponse.hasError(responseObject)) {
+      EwelinkErrorResponse error =
+          EwelinkErrorResponse.fromJson(jsonDecode(responseObject['msg']));
+      if (error.code == 401 &&
+          error.errmsg == 'no authorization' &&
+          credentials!.at.isNotEmpty) {
+        throw EwelinkInvalidAccessToken();
+      }
+      if (error.code == 401 &&
+          error.msg == 'Bearer:accessToken is empty' &&
+          credentials!.at.isNotEmpty) {
+        throw EwelinkInvalidAccessToken();
+      }
+      throw EwelinkGenericException(error.errmsg);
+    }
+    return responseObject;
   }
 
   String _makeAuthorizationSign(String appSecret, Map<String, dynamic> body) {

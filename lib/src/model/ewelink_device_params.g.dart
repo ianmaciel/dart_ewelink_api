@@ -8,8 +8,8 @@ part of 'ewelink_device_params.dart';
 
 EwelinkDeviceParams _$EwelinkDeviceParamsFromJson(Map<String, dynamic> json) =>
     EwelinkDeviceParams(
-      json['switch'] as String?,
-      (json['switches'] as List<dynamic>?)
+      status: json['switch'] as String?,
+      switches: (json['switches'] as List<dynamic>?)
           ?.map((e) => e as Map<String, dynamic>)
           .toList(),
     );

@@ -93,7 +93,7 @@ class Ewelink {
   String get apiWebSocketUrl =>
       'wss://${this.region}-pconnect3.coolkit.cc:8080/api/ws';
 
-  /// enerate Zeroconf URL
+  /// Generate Zeroconf URL
   String getZeroconfUrl(String ip) => 'http://$ip:8081/zeroconf';
 
   /// Returns user credentials information model
@@ -107,20 +107,14 @@ class Ewelink {
   }
 
   /// Toggle the device
-  ///
-  /// if [initialStatus] is set, then it whill ignore the current state of
-  /// device and will use the [initialStatus] instead. Useful to avoid request
-  /// and reduce the latency when you already know the switch state.
   Future<bool> toggleDevice({
     required String deviceId,
     int channel = 1,
-    String? initialStatus,
   }) async {
     return setDevicePowerState(
       deviceId: deviceId,
       state: 'toggle',
       channel: channel,
-      initialStatus: initialStatus,
     );
   }
 
@@ -135,12 +129,10 @@ class Ewelink {
     required String deviceId,
     required state,
     channel = 1,
-    String? initialStatus,
   }) async {
     return _service.setDevicePowerState(
       deviceId: deviceId,
       state: state,
-      initialStatus: initialStatus,
     );
   }
 

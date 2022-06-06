@@ -36,7 +36,4 @@ void main() async {
   log(credentials.at);
 
   await ewelink.toggleDevice(deviceId: 'my_hardcoded_device_id');
-  // Toogle device by its id, ignoring its current state.
-  await ewelink.toggleDevice(
-      deviceId: 'my_hardcoded_device_id', initialStatus: 'off');
 }

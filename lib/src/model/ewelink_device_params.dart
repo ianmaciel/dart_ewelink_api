@@ -26,10 +26,10 @@ part 'ewelink_device_params.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class EwelinkDeviceParams {
-  EwelinkDeviceParams(
+  EwelinkDeviceParams({
     this.status,
     this.switches,
-  );
+  });
 
   @JsonKey(name: 'switch')
   String? status;
