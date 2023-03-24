@@ -20,20 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import 'dart:developer';
+import 'package:json_annotation/json_annotation.dart';
 
-import 'package:dart_ewelink_api/dart_ewelink_api.dart';
+part 'ewelink_device_params.g.dart';
 
-void main() async {
-  Ewelink ewelink = Ewelink(
-    email: 'myemailaaddress@gmail.com',
-    password: 'mypassword',
-    region: 'us',
-  );
+@JsonSerializable(explicitToJson: true)
+class EwelinkDeviceParams {
+  EwelinkDeviceParams({
+    this.status,
+    this.switches,
+  });
 
-  // Get credentials
-  EwelinkCredentials credentials = await ewelink.getCredentials();
-  log(credentials.at);
+  @JsonKey(name: 'switch')
+  String? status;
+  List<Map<String, dynamic>>? switches;
 
-  await ewelink.toggleDevice(deviceId: 'my_hardcoded_device_id');
+  String? getSwitchesStatus(int channel) => (switches?[channel - 1])?['switch'];
+
+  factory EwelinkDeviceParams.fromJson(Map<String, dynamic> json) =>
+      _$EwelinkDeviceParamsFromJson(json);
+  Map<String, dynamic> toJson() => _$EwelinkDeviceParamsToJson(this);
 }

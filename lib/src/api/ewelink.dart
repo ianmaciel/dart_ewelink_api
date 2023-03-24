@@ -93,7 +93,7 @@ class Ewelink {
   String get apiWebSocketUrl =>
       'wss://${this.region}-pconnect3.coolkit.cc:8080/api/ws';
 
-  /// enerate Zeroconf URL
+  /// Generate Zeroconf URL
   String getZeroconfUrl(String ip) => 'http://$ip:8081/zeroconf';
 
   /// Returns user credentials information model
@@ -106,6 +106,7 @@ class Ewelink {
     return credentials!;
   }
 
+  /// Toggle the device
   Future<bool> toggleDevice({
     required String deviceId,
     int channel = 1,
