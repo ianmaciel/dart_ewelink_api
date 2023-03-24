@@ -22,7 +22,6 @@
 
 import 'package:json_annotation/json_annotation.dart';
 
-import 'ewelink_user.dart';
 
 part 'ewelink_error_response.g.dart';
 
