@@ -47,5 +47,9 @@ class EwelinkDevice {
 
   factory EwelinkDevice.fromJson(Map<String, dynamic> json) =>
       _$EwelinkDeviceFromJson(json);
+
+  static List<EwelinkDevice> fromJsonList(List<dynamic> json) =>
+      json.map((device) => EwelinkDevice.fromJson(device)).toList();
+
   Map<String, dynamic> toJson() => _$EwelinkDeviceToJson(this);
 }

@@ -193,7 +193,25 @@ class EwelinkService {
     return EwelinkDevice.fromJson(response);
   }
 
-  Future<Map<String, dynamic>> _makeRequest({
+  Future<List<EwelinkDevice>> getDevices() async {
+    if (credentials == null) {
+      throw EwelinkGenericException('Not logged in');
+    }
+    Map<String, dynamic> queryParameters = {
+      'appid': appId,
+      'ts': _timestamp,
+      'version': apiVersion.toString(),
+      'getTags': '1',
+    };
+    dynamic response = await _makeRequest(
+      urlPath: '/user/device',
+      queryParameters: queryParameters,
+    );
+
+    return EwelinkDevice.fromJsonList(response['devicelist']);
+  }
+
+  Future<dynamic> _makeRequest({
     String method = 'get',
     required String urlPath,
     Map<String, dynamic> body = const {},
@@ -227,7 +245,7 @@ class EwelinkService {
       );
     }
 
-    Map<String, dynamic> responseObject = jsonDecode(response.body);
+    dynamic responseObject = jsonDecode(response.body);
     if (EwelinkErrorResponse.hasError(responseObject)) {
       EwelinkErrorResponse error =
           EwelinkErrorResponse.fromJson(jsonDecode(responseObject['msg']));

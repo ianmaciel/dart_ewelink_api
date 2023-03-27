@@ -146,4 +146,12 @@ class Ewelink {
       deviceId: deviceId,
     );
   }
+
+  /// Get list of devices
+  ///
+  /// @param deviceId
+  /// @returns {Promise<*|null|{msg: string, error: *}>}
+  Future<List<EwelinkDevice>> getDevices() async {
+    return _service.getDevices();
+  }
 }
