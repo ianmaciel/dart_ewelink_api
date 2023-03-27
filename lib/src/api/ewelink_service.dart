@@ -111,6 +111,10 @@ class EwelinkService {
     // TODO - fixme
     EwelinkDevice device = await getDevice(deviceId: deviceId);
 
+    if (device.offline) {
+      throw EwelinkOfflineDeviceException();
+    }
+
     int switchesAmount = device.params.switches?.length ?? 1;
 
     if (switchesAmount > 0 && switchesAmount < channel) {

@@ -21,15 +21,27 @@
 // SOFTWARE.
 
 class EwelinkGenericException implements Exception {
-  final String? message;
-  EwelinkGenericException(this.message);
-  String toString() => "EwelinkGenericException: $message";
+  final String exceptionName = 'EwelinkGenericException';
+  final String message;
+  EwelinkGenericException([this.message = '']);
+  String toString() =>
+      message.isEmpty ? exceptionName.toString() : "$exceptionName: $message";
 }
 
 class EwelinkInvalidCredentials extends EwelinkGenericException {
-  EwelinkInvalidCredentials() : super('EwelinkInvalidCredentials');
+  @override
+  final String exceptionName = 'EwelinkInvalidCredentials';
+  EwelinkInvalidCredentials([String message = '']) : super(message);
 }
 
 class EwelinkInvalidAccessToken extends EwelinkGenericException {
-  EwelinkInvalidAccessToken() : super('EwelinkInvalidAccessToken');
+  @override
+  final String exceptionName = 'EwelinkInvalidAccessToken';
+  EwelinkInvalidAccessToken([String message = '']) : super(message);
+}
+
+class EwelinkOfflineDeviceException extends EwelinkGenericException {
+  @override
+  final String exceptionName = 'EwelinkOfflineDeviceException';
+  EwelinkOfflineDeviceException([String message = '']) : super(message);
 }
