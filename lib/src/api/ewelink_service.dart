@@ -21,16 +21,13 @@
 // SOFTWARE.
 
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:crypto/crypto.dart';
+import 'package:dart_ewelink_api/dart_ewelink_api.dart';
 import 'package:dart_ewelink_api/src/model/ewelink_device.dart';
 import 'package:dart_ewelink_api/src/model/ewelink_error_response.dart';
-import 'package:dart_ewelink_api/src/model/ewelink_exceptions.dart';
 import 'package:http/http.dart' as http;
 import 'package:nonce/nonce.dart';
-
-import 'package:dart_ewelink_api/dart_ewelink_api.dart';
 
 class EwelinkService {
   EwelinkService({
@@ -139,8 +136,8 @@ class EwelinkService {
       stateToSwitch = initialStatus == 'on' ? 'off' : 'on';
     }
 
-    if (device?.params.switches != null) {
-      params['switches'] = device!.params.switches;
+    if (device.params.switches != null) {
+      params['switches'] = device.params.switches;
       ((params['switches'])[channel - 1])['switch'] = stateToSwitch;
     } else {
       params['switch'] = stateToSwitch;
