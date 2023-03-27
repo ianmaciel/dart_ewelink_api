@@ -23,11 +23,10 @@
 import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
-import 'package:dart_ewelink_api/dart_ewelink_api.dart';
-import 'package:dart_ewelink_api/src/model/ewelink_device.dart';
-import 'package:dart_ewelink_api/src/model/ewelink_error_response.dart';
 import 'package:http/http.dart' as http;
 import 'package:nonce/nonce.dart';
+
+import 'package:dart_ewelink_api/dart_ewelink_api.dart';
 
 class EwelinkService {
   EwelinkService({

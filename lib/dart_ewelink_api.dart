@@ -22,10 +22,6 @@
 
 library dart_ewelink_api;
 
-export 'src/model/ewelink_account_info.dart';
-export 'src/model/ewelink_app_infos.dart';
-export 'src/model/ewelink_client_info.dart';
-export 'src/model/ewelink_credentials.dart';
-export 'src/model/ewelink_user.dart';
-export 'src/model/ewelink_exceptions.dart';
-export 'src/api/ewelink.dart';
+export 'src/models/models.dart';
+export 'src/ewelink_constants.dart';
+export 'src/api/ewelink_api_client.dart';

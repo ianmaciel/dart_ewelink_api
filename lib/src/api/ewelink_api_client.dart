@@ -20,11 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+import 'package:dart_ewelink_api/dart_ewelink_api.dart';
 import 'package:dart_ewelink_api/src/api/ewelink_service.dart';
-import 'package:dart_ewelink_api/src/ewelink_constants.dart';
-import 'package:dart_ewelink_api/src/model/ewelink_exceptions.dart';
-
-import '../model/ewelink_credentials.dart';
 
 class Ewelink {
   Ewelink({
@@ -140,7 +137,7 @@ class Ewelink {
   ///
   /// @param deviceId
   /// @returns {Promise<*|null|{msg: string, error: *}>}
-  getDevice({required String deviceId}) async {
+  Future<EwelinkDevice> getDevice({required String deviceId}) async {
     // TODO
     // if (this.devicesCache) {
     //   return this.devicesCache.find(dev => dev.deviceid === deviceId) || null;
