@@ -7,10 +7,10 @@ This project is port from [Javascript eWelink API](https://ewelink-api.vercel.ap
 
 ## Usage
 
-This package is a pure `Dart` package, and should work in any platform that Dart of Flutter supports. 
+This package is a pure `Dart` package, and should work in any platform that Dart of Flutter supports.
 
 TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
+to `/example` folder.
 
 ```dart
 import 'package:dart_ewelink_api/dart_ewelink_api.dart';

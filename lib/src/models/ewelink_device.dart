@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import 'package:dart_ewelink_api/src/model/ewelink_device_params.dart';
+import 'models.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'ewelink_device.g.dart';
