@@ -43,6 +43,8 @@ class EwelinkDevice {
   // let status = _get(device, 'params.switch', false);
   // const switches = _get(device, 'params.switches', false);
 
+  bool get offline => !online;
+
   factory EwelinkDevice.fromJson(Map<String, dynamic> json) =>
       _$EwelinkDeviceFromJson(json);
   Map<String, dynamic> toJson() => _$EwelinkDeviceToJson(this);
