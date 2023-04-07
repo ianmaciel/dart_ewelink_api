@@ -12,7 +12,7 @@ EwelinkUser _$EwelinkUserFromJson(Map<String, dynamic> json) => EwelinkUser(
       (json['appInfos'] as List<dynamic>)
           .map((e) => EwelinkAppInfos.fromJson(e as Map<String, dynamic>))
           .toList(),
-      json['bindInfos'] as Map<String, dynamic>,
+      json['bindInfos'] as Map<String, dynamic>?,
       json['accountInfo'] == null
           ? null
           : EwelinkAccountInfo.fromJson(
@@ -32,7 +32,7 @@ EwelinkUser _$EwelinkUserFromJson(Map<String, dynamic> json) => EwelinkUser(
       json['online'] as bool,
       json['password'] as String,
       json['platformLang'] as Map<String, dynamic>?,
-      json['userStatus'] as String,
+      json['userStatus'] as String?,
       json['timezone'] as Map<String, dynamic>?,
       json['extra'] as Map<String, dynamic>,
     );
