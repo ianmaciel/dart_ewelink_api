@@ -23,10 +23,9 @@
 import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
+import 'package:dart_ewelink_api/dart_ewelink_api.dart';
 import 'package:http/http.dart' as http;
 import 'package:nonce/nonce.dart';
-
-import 'package:dart_ewelink_api/dart_ewelink_api.dart';
 
 class EwelinkService {
   EwelinkService({
@@ -190,7 +189,8 @@ class EwelinkService {
       queryParameters: queryParameters,
     );
 
-    return EwelinkDevice.fromJson(response);
+    EwelinkDevice eweJson = EwelinkDevice.fromJson(response);
+    return eweJson;
   }
 
   Future<List<EwelinkDevice>> getDevices() async {
