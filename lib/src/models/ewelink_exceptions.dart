@@ -20,30 +20,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import 'package:dart_ewelink_api/src/model/ewelink_device_params.dart';
-import 'package:json_annotation/json_annotation.dart';
+class EwelinkGenericException implements Exception {
+  final String exceptionName = 'EwelinkGenericException';
+  final String message;
+  EwelinkGenericException([this.message = '']);
+  String toString() =>
+      message.isEmpty ? exceptionName.toString() : "$exceptionName: $message";
+}
 
-part 'ewelink_device.g.dart';
+class EwelinkInvalidCredentials extends EwelinkGenericException {
+  @override
+  final String exceptionName = 'EwelinkInvalidCredentials';
+  EwelinkInvalidCredentials([String message = '']) : super(message);
+}
 
-@JsonSerializable(explicitToJson: true)
-class EwelinkDevice {
-  EwelinkDevice(
-    this.online,
-    this.deviceid,
-    this.name,
-    this.type,
-    this.params,
-  );
-  bool online;
-  String deviceid;
-  String name;
-  String type;
-  EwelinkDeviceParams params;
+class EwelinkInvalidAccessToken extends EwelinkGenericException {
+  @override
+  final String exceptionName = 'EwelinkInvalidAccessToken';
+  EwelinkInvalidAccessToken([String message = '']) : super(message);
+}
 
-  // let status = _get(device, 'params.switch', false);
-  // const switches = _get(device, 'params.switches', false);
-
-  factory EwelinkDevice.fromJson(Map<String, dynamic> json) =>
-      _$EwelinkDeviceFromJson(json);
-  Map<String, dynamic> toJson() => _$EwelinkDeviceToJson(this);
+class EwelinkOfflineDeviceException extends EwelinkGenericException {
+  @override
+  final String exceptionName = 'EwelinkOfflineDeviceException';
+  EwelinkOfflineDeviceException([String message = '']) : super(message);
 }

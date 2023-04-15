@@ -41,7 +41,6 @@ class EwelinkUser {
     this.createdAt,
     this.currentFamilyId,
     this.email,
-    this.extra,
     this.extraPush,
     this.ip,
     this.isAccepEmailAd,
@@ -53,18 +52,19 @@ class EwelinkUser {
     this.password,
     this.platformLang,
     this.userStatus,
+    this.timezone,
+    this.extra,
   );
   String apikey;
   String appId;
   List<EwelinkAppInfos> appInfos;
-  Map<String, dynamic> bindInfos;
-  EwelinkAccountInfo accountInfo;
+  Map<String, dynamic>? bindInfos;
+  EwelinkAccountInfo? accountInfo;
   EwelinkClientInfo clientInfo;
   String countryCode;
   String createdAt;
   String currentFamilyId;
   String email;
-  Map<String, dynamic> extra;
   Map<String, dynamic> extraPush;
   String ip;
   bool isAccepEmailAd;
@@ -74,8 +74,10 @@ class EwelinkUser {
   String offlineTime;
   bool online;
   String password;
-  Map<String, dynamic> platformLang;
-  String userStatus;
+  Map<String, dynamic>? platformLang;
+  String? userStatus;
+  Map<String, dynamic>? timezone;
+  Map<String, dynamic> extra;
 
   factory EwelinkUser.fromJson(Map<String, dynamic> json) =>
       _$EwelinkUserFromJson(json);

@@ -20,17 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+import 'package:dart_ewelink_api/dart_ewelink_api.dart';
 import 'package:dart_ewelink_api/src/api/ewelink_service.dart';
-import 'package:dart_ewelink_api/src/ewelink_constants.dart';
-import 'package:dart_ewelink_api/src/model/ewelink_exceptions.dart';
-
-import '../model/ewelink_credentials.dart';
 
 class Ewelink {
   Ewelink({
     this.email,
     this.password,
-    required this.region,
+    this.region = 'us',
     this.credentials,
     this.phoneNumber,
     this.arpTable,
@@ -103,6 +100,11 @@ class Ewelink {
       phoneNumber: phoneNumber,
       password: password,
     );
+
+    if (credentials != null) {
+      region = credentials!.region;
+    }
+
     return credentials!;
   }
 
@@ -140,7 +142,7 @@ class Ewelink {
   ///
   /// @param deviceId
   /// @returns {Promise<*|null|{msg: string, error: *}>}
-  getDevice({required String deviceId}) async {
+  Future<EwelinkDevice> getDevice({required String deviceId}) async {
     // TODO
     // if (this.devicesCache) {
     //   return this.devicesCache.find(dev => dev.deviceid === deviceId) || null;
@@ -148,5 +150,20 @@ class Ewelink {
     return _service.getDevice(
       deviceId: deviceId,
     );
+  }
+
+  /// Get list of devices
+  ///
+  /// @param deviceId
+  /// @returns {Promise<*|null|{msg: string, error: *}>}
+  Future<List<EwelinkDevice>> getDevices() async {
+    return _service.getDevices();
+  }
+
+  String getRegion() {
+    if (credentials == null) {
+      throw EwelinkGenericException('Not logged in');
+    }
+    return region;
   }
 }

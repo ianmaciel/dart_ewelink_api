@@ -31,9 +31,20 @@ void main() async {
     region: 'us',
   );
 
-  // Get credentials
-  EwelinkCredentials credentials = await ewelink.getCredentials();
-  log(credentials.at);
+  try {
+    // Get credentials
+    await ewelink.getCredentials();
 
-  await ewelink.toggleDevice(deviceId: 'my_hardcoded_device_id');
+    List<EwelinkDevice> devices = await ewelink.getDevices();
+
+    devices.forEach((device) => print(device.name.toString()));
+
+    await ewelink.toggleDevice(deviceId: devices.first.deviceid);
+  } on EwelinkInvalidAccessToken {
+    print('Error: invalid access token');
+  } on EwelinkOfflineDeviceException {
+    print('Error: device is offline');
+  } catch (e) {
+    print('Error: ${e.toString()}');
+  }
 }

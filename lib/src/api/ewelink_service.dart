@@ -21,16 +21,11 @@
 // SOFTWARE.
 
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:crypto/crypto.dart';
-import 'package:dart_ewelink_api/src/model/ewelink_device.dart';
-import 'package:dart_ewelink_api/src/model/ewelink_error_response.dart';
-import 'package:dart_ewelink_api/src/model/ewelink_exceptions.dart';
+import 'package:dart_ewelink_api/dart_ewelink_api.dart';
 import 'package:http/http.dart' as http;
 import 'package:nonce/nonce.dart';
-
-import 'package:dart_ewelink_api/dart_ewelink_api.dart';
 
 class EwelinkService {
   EwelinkService({
@@ -114,6 +109,10 @@ class EwelinkService {
     // TODO - fixme
     EwelinkDevice device = await getDevice(deviceId: deviceId);
 
+    if (device.offline) {
+      throw EwelinkOfflineDeviceException();
+    }
+
     int switchesAmount = device.params.switches?.length ?? 1;
 
     if (switchesAmount > 0 && switchesAmount < channel) {
@@ -139,8 +138,8 @@ class EwelinkService {
       stateToSwitch = initialStatus == 'on' ? 'off' : 'on';
     }
 
-    if (device?.params.switches != null) {
-      params['switches'] = device!.params.switches;
+    if (device.params.switches != null) {
+      params['switches'] = device.params.switches;
       ((params['switches'])[channel - 1])['switch'] = stateToSwitch;
     } else {
       params['switch'] = stateToSwitch;
@@ -190,10 +189,39 @@ class EwelinkService {
       queryParameters: queryParameters,
     );
 
-    return EwelinkDevice.fromJson(response);
+    try {
+      EwelinkDevice eweJson = EwelinkDevice.fromJson(response);
+      return eweJson;
+    } catch (e) {
+      throw EwelinkGenericException(
+          'Unexpected response from getDevice(). Received response was ${response}.\nError: ${e.toString()}');
+    }
   }
 
-  Future<Map<String, dynamic>> _makeRequest({
+  Future<List<EwelinkDevice>> getDevices() async {
+    if (credentials == null) {
+      throw EwelinkGenericException('Not logged in');
+    }
+    Map<String, dynamic> queryParameters = {
+      'appid': appId,
+      'ts': _timestamp,
+      'version': apiVersion.toString(),
+      'getTags': '1',
+    };
+    dynamic response = await _makeRequest(
+      urlPath: '/user/device',
+      queryParameters: queryParameters,
+    );
+
+    try {
+      return EwelinkDevice.fromJsonList(response['devicelist']);
+    } catch (e) {
+      throw EwelinkGenericException(
+          'Unexpected response from getDevices(). Received response was ${response}. The response should have `deviceList` inside.\nError: ${e.toString()}');
+    }
+  }
+
+  Future<dynamic> _makeRequest({
     String method = 'get',
     required String urlPath,
     Map<String, dynamic> body = const {},
@@ -227,7 +255,14 @@ class EwelinkService {
       );
     }
 
-    Map<String, dynamic> responseObject = jsonDecode(response.body);
+    late dynamic responseObject;
+    try {
+      responseObject = jsonDecode(response.body);
+    } catch (e) {
+      throw EwelinkGenericException(
+          'Unexpected response from _makeRequest(), url: $urlPath. Received response was ${response}. \nError: ${e.toString()}');
+    }
+
     if (EwelinkErrorResponse.hasError(responseObject)) {
       EwelinkErrorResponse error =
           EwelinkErrorResponse.fromJson(jsonDecode(responseObject['msg']));

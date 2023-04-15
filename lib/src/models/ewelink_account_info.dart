@@ -20,16 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-class EwelinkGenericException implements Exception {
-  final String? message;
-  EwelinkGenericException(this.message);
-  String toString() => "EwelinkGenericException: $message";
-}
+import 'package:json_annotation/json_annotation.dart';
 
-class EwelinkInvalidCredentials extends EwelinkGenericException {
-  EwelinkInvalidCredentials() : super('EwelinkInvalidCredentials');
-}
+part 'ewelink_account_info.g.dart';
 
-class EwelinkInvalidAccessToken extends EwelinkGenericException {
-  EwelinkInvalidAccessToken() : super('EwelinkInvalidAccessToken');
+@JsonSerializable(explicitToJson: true)
+class EwelinkAccountInfo {
+  EwelinkAccountInfo(this.expiredAt, this.level, this.validAt);
+  String? expiredAt;
+  int level;
+  String? validAt;
+
+  factory EwelinkAccountInfo.fromJson(Map<String, dynamic> json) =>
+      _$EwelinkAccountInfoFromJson(json);
+  Map<String, dynamic> toJson() => _$EwelinkAccountInfoToJson(this);
 }

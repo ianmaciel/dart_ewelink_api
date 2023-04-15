@@ -20,32 +20,40 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+import 'package:dart_ewelink_api/src/models/ewelink_device_tags.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import 'ewelink_user.dart';
+import 'models.dart';
 
-part 'ewelink_error_response.g.dart';
+part 'ewelink_device.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-// The api always returns status code 200, even when there are errors.
-// If has erros, then the error will be inside the body.
-class EwelinkErrorResponse {
-  EwelinkErrorResponse({
-    this.msg = '',
-    this.errmsg = '',
-    required this.code,
-  });
-  String msg;
-  String errmsg;
-  @JsonKey(name: 'error')
-  int code;
+class EwelinkDevice {
+  EwelinkDevice(
+    this.online,
+    this.deviceid,
+    this.name,
+    this.type,
+    this.params,
+    this.tags,
+  );
+  bool online;
+  String deviceid;
+  String name;
+  String type;
+  EwelinkDeviceParams params;
+  EwelinkDeviceTags? tags;
 
-  factory EwelinkErrorResponse.fromJson(Map<String, dynamic> json) =>
-      _$EwelinkErrorResponseFromJson(json);
-  Map<String, dynamic> toJson() => _$EwelinkErrorResponseToJson(this);
+  // let status = _get(device, 'params.switch', false);
+  // const switches = _get(device, 'params.switches', false);
 
-  static bool hasError(Map<String, dynamic> response) {
-    int error = (response['error'] as int?) ?? 0;
-    return (error != 0);
-  }
+  bool get offline => !online;
+
+  factory EwelinkDevice.fromJson(Map<String, dynamic> json) =>
+      _$EwelinkDeviceFromJson(json);
+
+  static List<EwelinkDevice> fromJsonList(List<dynamic> json) =>
+      json.map((device) => EwelinkDevice.fromJson(device)).toList();
+
+  Map<String, dynamic> toJson() => _$EwelinkDeviceToJson(this);
 }

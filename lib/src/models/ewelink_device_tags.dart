@@ -22,16 +22,18 @@
 
 import 'package:json_annotation/json_annotation.dart';
 
-part 'ewelink_account_info.g.dart';
+part 'ewelink_device_tags.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class EwelinkAccountInfo {
-  EwelinkAccountInfo(this.expiredAt, this.level, this.validAt);
-  String expiredAt;
-  int level;
-  String validAt;
+class EwelinkDeviceTags {
+  EwelinkDeviceTags({
+    this.entityNames,
+  });
 
-  factory EwelinkAccountInfo.fromJson(Map<String, dynamic> json) =>
-      _$EwelinkAccountInfoFromJson(json);
-  Map<String, dynamic> toJson() => _$EwelinkAccountInfoToJson(this);
+  @JsonKey(name: 'ck_channel_name')
+  Map<String, dynamic>? entityNames;
+
+  factory EwelinkDeviceTags.fromJson(Map<String, dynamic> json) =>
+      _$EwelinkDeviceTagsFromJson(json);
+  Map<String, dynamic> toJson() => _$EwelinkDeviceTagsToJson(this);
 }

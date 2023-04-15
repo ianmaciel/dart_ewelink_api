@@ -20,8 +20,31 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-library dart_ewelink_api;
+import 'package:json_annotation/json_annotation.dart';
 
-export 'src/models/models.dart';
-export 'src/ewelink_constants.dart';
-export 'src/api/ewelink_api_client.dart';
+
+part 'ewelink_error_response.g.dart';
+
+@JsonSerializable(explicitToJson: true)
+// The api always returns status code 200, even when there are errors.
+// If has erros, then the error will be inside the body.
+class EwelinkErrorResponse {
+  EwelinkErrorResponse({
+    this.msg = '',
+    this.errmsg = '',
+    required this.code,
+  });
+  String msg;
+  String errmsg;
+  @JsonKey(name: 'error')
+  int code;
+
+  factory EwelinkErrorResponse.fromJson(Map<String, dynamic> json) =>
+      _$EwelinkErrorResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$EwelinkErrorResponseToJson(this);
+
+  static bool hasError(Map<String, dynamic> response) {
+    int error = (response['error'] as int?) ?? 0;
+    return (error != 0);
+  }
+}
