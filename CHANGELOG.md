@@ -1,6 +1,6 @@
 ## 0.0.6
 
-* RImplement methods getDevices() and getDevice().
+* Implement methods getDevices() and getDevice().
 * Improve robustness of network calls
 
 ## 0.0.4
