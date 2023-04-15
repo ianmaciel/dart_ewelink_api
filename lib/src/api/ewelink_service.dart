@@ -189,8 +189,13 @@ class EwelinkService {
       queryParameters: queryParameters,
     );
 
-    EwelinkDevice eweJson = EwelinkDevice.fromJson(response);
-    return eweJson;
+    try {
+      EwelinkDevice eweJson = EwelinkDevice.fromJson(response);
+      return eweJson;
+    } catch (e) {
+      throw EwelinkGenericException(
+          'Unexpected response from getDevice(). Received response was ${response}.\nError: ${e.toString()}');
+    }
   }
 
   Future<List<EwelinkDevice>> getDevices() async {
@@ -208,7 +213,12 @@ class EwelinkService {
       queryParameters: queryParameters,
     );
 
-    return EwelinkDevice.fromJsonList(response['devicelist']);
+    try {
+      return EwelinkDevice.fromJsonList(response['devicelist']);
+    } catch (e) {
+      throw EwelinkGenericException(
+          'Unexpected response from getDevices(). Received response was ${response}. The response should have `deviceList` inside.\nError: ${e.toString()}');
+    }
   }
 
   Future<dynamic> _makeRequest({
@@ -245,7 +255,14 @@ class EwelinkService {
       );
     }
 
-    dynamic responseObject = jsonDecode(response.body);
+    late dynamic responseObject;
+    try {
+      responseObject = jsonDecode(response.body);
+    } catch (e) {
+      throw EwelinkGenericException(
+          'Unexpected response from _makeRequest(), url: $urlPath. Received response was ${response}. \nError: ${e.toString()}');
+    }
+
     if (EwelinkErrorResponse.hasError(responseObject)) {
       EwelinkErrorResponse error =
           EwelinkErrorResponse.fromJson(jsonDecode(responseObject['msg']));
