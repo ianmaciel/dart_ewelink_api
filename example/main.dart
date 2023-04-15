@@ -42,10 +42,10 @@ void main() async {
 
     await ewelink.toggleDevice(deviceId: devices.first.deviceid);
   } on EwelinkInvalidAccessToken {
-    print('invalid access token');
+    print('Error: invalid access token');
   } on EwelinkOfflineDeviceException {
-    print('device is offline');
+    print('Error: device is offline');
   } catch (e) {
-    print('error: ${e.toString()}');
+    print('Error: ${e.toString()}');
   }
 }
