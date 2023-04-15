@@ -13,6 +13,9 @@ EwelinkDevice _$EwelinkDeviceFromJson(Map<String, dynamic> json) =>
       json['name'] as String,
       json['type'] as String,
       EwelinkDeviceParams.fromJson(json['params'] as Map<String, dynamic>),
+      json['tags'] == null
+          ? null
+          : EwelinkDeviceTags.fromJson(json['tags'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$EwelinkDeviceToJson(EwelinkDevice instance) =>
@@ -22,4 +25,5 @@ Map<String, dynamic> _$EwelinkDeviceToJson(EwelinkDevice instance) =>
       'name': instance.name,
       'type': instance.type,
       'params': instance.params.toJson(),
+      'tags': instance.tags?.toJson(),
     };

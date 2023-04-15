@@ -20,40 +20,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import 'package:dart_ewelink_api/src/models/ewelink_device_tags.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import 'models.dart';
-
-part 'ewelink_device.g.dart';
+part 'ewelink_device_tags.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class EwelinkDevice {
-  EwelinkDevice(
-    this.online,
-    this.deviceid,
-    this.name,
-    this.type,
-    this.params,
-    this.tags,
-  );
-  bool online;
-  String deviceid;
-  String name;
-  String type;
-  EwelinkDeviceParams params;
-  EwelinkDeviceTags? tags;
+class EwelinkDeviceTags {
+  EwelinkDeviceTags({
+    this.entityNames,
+  });
 
-  // let status = _get(device, 'params.switch', false);
-  // const switches = _get(device, 'params.switches', false);
+  @JsonKey(name: 'ck_channel_name')
+  Map<String, dynamic>? entityNames;
 
-  bool get offline => !online;
-
-  factory EwelinkDevice.fromJson(Map<String, dynamic> json) =>
-      _$EwelinkDeviceFromJson(json);
-
-  static List<EwelinkDevice> fromJsonList(List<dynamic> json) =>
-      json.map((device) => EwelinkDevice.fromJson(device)).toList();
-
-  Map<String, dynamic> toJson() => _$EwelinkDeviceToJson(this);
+  factory EwelinkDeviceTags.fromJson(Map<String, dynamic> json) =>
+      _$EwelinkDeviceTagsFromJson(json);
+  Map<String, dynamic> toJson() => _$EwelinkDeviceTagsToJson(this);
 }

@@ -27,9 +27,9 @@ part 'ewelink_account_info.g.dart';
 @JsonSerializable(explicitToJson: true)
 class EwelinkAccountInfo {
   EwelinkAccountInfo(this.expiredAt, this.level, this.validAt);
-  String expiredAt;
+  String? expiredAt;
   int level;
-  String validAt;
+  String? validAt;
 
   factory EwelinkAccountInfo.fromJson(Map<String, dynamic> json) =>
       _$EwelinkAccountInfoFromJson(json);
