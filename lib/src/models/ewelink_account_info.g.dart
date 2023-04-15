@@ -8,9 +8,9 @@ part of 'ewelink_account_info.dart';
 
 EwelinkAccountInfo _$EwelinkAccountInfoFromJson(Map<String, dynamic> json) =>
     EwelinkAccountInfo(
-      json['expiredAt'] as String,
+      json['expiredAt'] as String?,
       json['level'] as int,
-      json['validAt'] as String,
+      json['validAt'] as String?,
     );
 
 Map<String, dynamic> _$EwelinkAccountInfoToJson(EwelinkAccountInfo instance) =>

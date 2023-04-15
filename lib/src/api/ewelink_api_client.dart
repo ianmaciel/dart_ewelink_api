@@ -27,7 +27,7 @@ class Ewelink {
   Ewelink({
     this.email,
     this.password,
-    required this.region,
+    this.region = 'us',
     this.credentials,
     this.phoneNumber,
     this.arpTable,
@@ -100,6 +100,11 @@ class Ewelink {
       phoneNumber: phoneNumber,
       password: password,
     );
+
+    if (credentials != null) {
+      region = credentials!.region;
+    }
+
     return credentials!;
   }
 
@@ -145,5 +150,20 @@ class Ewelink {
     return _service.getDevice(
       deviceId: deviceId,
     );
+  }
+
+  /// Get list of devices
+  ///
+  /// @param deviceId
+  /// @returns {Promise<*|null|{msg: string, error: *}>}
+  Future<List<EwelinkDevice>> getDevices() async {
+    return _service.getDevices();
+  }
+
+  String getRegion() {
+    if (credentials == null) {
+      throw EwelinkGenericException('Not logged in');
+    }
+    return region;
   }
 }

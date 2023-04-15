@@ -58,7 +58,7 @@ class EwelinkUser {
   String apikey;
   String appId;
   List<EwelinkAppInfos> appInfos;
-  Map<String, dynamic> bindInfos;
+  Map<String, dynamic>? bindInfos;
   EwelinkAccountInfo? accountInfo;
   EwelinkClientInfo clientInfo;
   String countryCode;
@@ -75,7 +75,7 @@ class EwelinkUser {
   bool online;
   String password;
   Map<String, dynamic>? platformLang;
-  String userStatus;
+  String? userStatus;
   Map<String, dynamic>? timezone;
   Map<String, dynamic> extra;
 
