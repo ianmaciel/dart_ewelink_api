@@ -22,8 +22,10 @@ import 'package:dart_ewelink_api/dart_ewelink_api.dart';
     password: '<your ewelink password>',
     region: '<your ewelink region>',
   });
+  await ewelink.getCredentials();
 
-  const Map<String, dynamic> devices = await ewelink.toggleDevice('deviceId');
+  List<EwelinkDevice> devices = await ewelink.getDevices();
+  await ewelink.toggleDevice(deviceId: devices.first.deviceid);
 ```
 
 ## Additional information
