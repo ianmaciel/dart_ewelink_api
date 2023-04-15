@@ -1,3 +1,8 @@
+## 0.0.6
+
+* RImplement methods getDevices() and getDevice().
+* Improve robustness of network calls
+
 ## 0.0.4
 
 * Read the device state before toggle it.
