@@ -33,8 +33,7 @@ void main() async {
 
   try {
     // Get credentials
-    EwelinkCredentials credentials = await ewelink.getCredentials();
-    print(credentials.at);
+    await ewelink.getCredentials();
 
     List<EwelinkDevice> devices = await ewelink.getDevices();
 
